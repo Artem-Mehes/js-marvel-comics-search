@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvel Comics Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" integrity="sha512-oHDEc8Xed4hiW6CxD7qjbnI+B07vDdX7hEPTvn9pSZO1bcRqHp8mj9pyr+8RVC2GmtEfI2Bi9Ke9Ass0as+zpg==" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="header__heading">
+            Search 
+            <img class="header__img" src="img/marvel.svg" alt="Marvel" width="100"> 
+            Comics and Add to Reading List
+        </h1>
+
+        <form class="header__search-form" id="header__search-form">
+            <input class="header__search" type="search" name="search" placeholder="Title of the Comic">
+            <input class="header__submit" type="submit" value="Search">
+        </form>
+    </header>
+
+    <main class="main">
+        <section class="search-results">
+            <h2>Search results</h2>
+            <ul class="search-results__list" id="search-results__list"></ul>
+        </section>
+    </main>
+
+    <aside class="aside">
+        <section class="reading">
+            <h2 class="favourites__heading">Reading List</h2>
+            <ul id="reading__list"></ul>
+        </section>
+    </aside>
+
+    <script src="/node_modules/crypto-js/crypto-js.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
