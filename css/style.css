@@ -1,6 +1,7 @@
 :root {
     --red: #F0141E;
     --green: #0b8d0b;
+    --gray: #777d77;
 }
 
 html {
@@ -87,7 +88,6 @@ input[type="submit"]:active {
 .aside {
     grid-area: aside;
     border-left: 3px solid var(--red);
-    padding: 0 20px;
     width: 500px;
 }
 
@@ -103,6 +103,7 @@ input[type="submit"]:active {
     display: grid;
     grid-template-columns: repeat( auto-fit, minmax(300px, 1fr) );
     gap: 80px;
+    position: relative;
 }
 
 .search-results__item {
@@ -135,17 +136,85 @@ input[type="submit"]:active {
     cursor: pointer;
     padding: 10px;
     opacity: 0;
-    background-color: var(--green);
     color: #fff;
+    background-color: var(--gray);
 }
 
-.reading__list-item {
+.search-results__btn.fav-comic-btn {
+    background-color: var(--green);
+}
+
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 100px;
+}
+
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #000;
+    /*  */
+    border-color: #000 transparent #000 transparent;
+    animation: lds-dual-ring 1.6s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.favourite {
+    position: sticky;
+    top: 0;
+    padding: 20px;
+}
+
+.favourite__heading {
+    margin: 5px 0 20px 0;
+}
+
+.favourite__list-item {
     border: 3px solid #000;
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     border-radius: 11px;
     display: flex;
-    justify-content: center;
     align-items: center;
     margin-bottom: 10px;
     text-align: center;
+    padding: 0 5px;
+}
+
+.favourite__list-title {
+    flex: 1;
+}
+
+.fa-times-circle {
+    font-size: 1.2rem;
+    color: var(--red);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }

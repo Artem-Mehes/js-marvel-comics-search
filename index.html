@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marvel Comics Search</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" integrity="sha512-oHDEc8Xed4hiW6CxD7qjbnI+B07vDdX7hEPTvn9pSZO1bcRqHp8mj9pyr+8RVC2GmtEfI2Bi9Ke9Ass0as+zpg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -14,7 +15,7 @@
         <h1 class="header__heading">
             Search 
             <img class="header__img" src="img/marvel.svg" alt="Marvel" width="100"> 
-            Comics and Add to Reading List
+            Comics and Add to Favourite
         </h1>
 
         <form class="header__search-form" id="header__search-form">
@@ -26,14 +27,22 @@
     <main class="main">
         <section class="search-results">
             <h2>Search results</h2>
-            <ul class="search-results__list" id="search-results__list"></ul>
+
+            <ul class="search-results__list" id="search-results__list">
+                <div class="modal">
+                    <div class="modal-content">
+
+                    </div>
+                </div>
+            </ul>
         </section>
     </main>
 
     <aside class="aside">
-        <section class="reading">
-            <h2 class="favourites__heading">Reading List</h2>
-            <ul id="reading__list"></ul>
+        <section class="favourite">
+            <h2 class="favourite__heading">Favourite</h2>
+
+            <ul id="favourite__list"></ul>
         </section>
     </aside>
 

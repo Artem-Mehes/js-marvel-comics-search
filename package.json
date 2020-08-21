@@ -9,6 +9,7 @@
   "author": "Artem Mehes",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0",
     "crypto-js": "^4.0.0"
   }
 }
