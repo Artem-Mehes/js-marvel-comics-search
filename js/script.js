@@ -6,7 +6,12 @@ const PUBLIC_KEY = '5ac7f43a9d05c11e4e3d48fe82e21a80',
 
 const headerSearchForm = document.querySelector('#header__search-form'),
     searchResultsList = document.querySelector('#search-results__list'),
-    favouriteList = document.querySelector('#favourite__list');
+    favouriteList = document.querySelector('#favourite__list'),
+    modal = document.querySelector('.modal'),
+    modalPoster = modal.querySelector('.modal__poster'),
+    modalTitle = modal.querySelector('.modal__title'),
+    modalCreators = modal.querySelector('.modal__creators'),
+    modalDescription = modal.querySelector('.modal__description');
 
 const preloader = document.createElement('div');
 preloader.classList.add('lds-dual-ring');
@@ -39,23 +44,26 @@ const DataService = class {
 }
 
 const showSearchResult = data => {
-    data.forEach(item => {
-        const { id, title, images } = item;
+    let out = '';
 
-        let className, btnText;
-
-        if ( storageItems.some(item => item.id == id) ) {
-            className = 'fav-comic-btn';
-            btnText = 'Favourite';
-        } else {
-            className = '';
-            btnText = 'Add to Favourite';
-        }
-
-        const imgPath = images[0].path,
-            extension = images[0].extension;
-
-        const out = `<li class="search-results__item" id="sc${id}">
+    if (data.length) {
+        data.forEach(item => {
+            const { id, title, images } = item;
+    
+            let className, btnText;
+    
+            if ( storageItems.some(item => item.id == id) ) {
+                className = 'fav-comic-btn';
+                btnText = 'Favourite';
+            } else {
+                className = '';
+                btnText = 'Add to Favourite';
+            }
+    
+            const imgPath = images[0].path,
+                extension = images[0].extension;
+    
+            out += `<li class="search-results__item" id="sc${id}">
                         <figure>
                             <img 
                                 class="search-results__poster" 
@@ -70,16 +78,47 @@ const showSearchResult = data => {
                             </button>
                         </figure>
                     </li>`;
+        });
+    } else {
+        out = 'No Results Found';
+    }
 
-        searchResultsList.insertAdjacentHTML('beforeend', out);
-    });
-
+    searchResultsList.insertAdjacentHTML('beforeend', out);
     preloader.remove();
 }
 
 const showDetailsModal = data => {
-    
+    let { title, images, description, creators } = data[0];
+
+    if (!description) description = 'Not Found';
+    let comicCreators = '';
+
+    if (creators.items.length) {
+        creators.items.forEach((item, i) => {
+            if (i < 4) {
+                comicCreators += `<p><i>${item.name}</i> - ${item.role}</p>`;
+            }
+        });
+    } else {
+        comicCreators = 'Not Found';
+    }
+
+    const imgPath = images[0].path,
+        extension = images[0].extension;
+
+    modalPoster.src = `${imgPath}.${extension}`;
+    modalTitle.textContent = title;
+    modalCreators.innerHTML = comicCreators;
+    modalDescription.innerHTML = description;
+
+    modal.classList.remove('hide');
 }
+
+const closeModal = () => {
+    modalCreators.innerHTML = '';
+
+    modal.classList.add('hide');
+};
 
 const favouriteListComicMaker = ({ id, title }) => {
     const out = `<li class="favourite__list-item" id=fc${id}>
@@ -144,21 +183,33 @@ searchResultsList.addEventListener('click', e => {
         addToFavourite(comicObj);
     } 
 
-    if ( target.matches('.search-results__poster') ) {
-        new DataService().getComicDetails(comicId).then(showDetailsModal);
+    if (target.matches('.search-results__poster')) {
+        new DataService().getComicDetails(id).then(showDetailsModal);
     }
 });
 
 favouriteList.addEventListener('click', e => {
     const target = e.target,
-        removeBtn = target.closest('.fa-times-circle');
-
-    if (!removeBtn) return;
-
-    const comic = removeBtn.closest('.favourite__list-item'),
+        comic = target.closest('.favourite__list-item'),
         id = comic.id.slice(2);
 
-    removeFromFavourite(comic, id);
+    if (target.matches('.fa-times-circle')) {
+        removeFromFavourite(comic, id);
+    } 
+
+    if (target.matches('.favourite__list-title')) {
+        new DataService().getComicDetails(id).then(showDetailsModal);
+    }
+});
+
+modal.addEventListener('click', e => {
+    const target = e.target,
+        closeBtn = target.closest('.fa-times'),
+        background = target.matches('.modal');
+
+    if (closeBtn || background) {
+        closeModal();
+    }
 });
 
 loadStorage();
