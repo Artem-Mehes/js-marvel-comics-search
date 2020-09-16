@@ -19,7 +19,13 @@
         </h1>
 
         <form class="header__search-form" id="header__search-form">
-            <input class="header__search" type="search" name="search" placeholder="Title of the Comic">
+            <input 
+                class="header__search" 
+                type="search" 
+                name="search" 
+                placeholder="Title of the Comic"
+                autocomplete="off"
+            >
 
             <input class="header__submit" type="submit" value="Search">
         </form>
@@ -29,12 +35,21 @@
         <section class="search-results">
             <h2>Search results</h2>
 
-            <ul class="search-results__list" id="search-results__list"></ul>
+            <ul class="search-list" id="search-list"></ul>
         </section>
     </main>
 
     <aside class="aside">
         <section class="favourite">
+
+            <div class="favourite__inner" id="burger-wrapper">
+                <div class="favourite__inner-burger open" id="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
             <h2 class="favourite__heading">Favourite</h2>
 
             <ul id="favourite__list"></ul>

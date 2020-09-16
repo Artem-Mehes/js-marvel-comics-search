@@ -5,13 +5,16 @@ const PUBLIC_KEY = '5ac7f43a9d05c11e4e3d48fe82e21a80',
     hash = CryptoJS.MD5(ts + PRIV_KEY + PUBLIC_KEY).toString();
 
 const headerSearchForm = document.querySelector('#header__search-form'),
-    searchResultsList = document.querySelector('#search-results__list'),
+    searchList = document.querySelector('#search-list'),
     favouriteList = document.querySelector('#favourite__list'),
+    favoriteSection = document.querySelector('.favourite'),
     modal = document.querySelector('.modal'),
     modalPoster = modal.querySelector('.modal__poster'),
     modalTitle = modal.querySelector('.modal__title'),
     modalCreators = modal.querySelector('.modal__creators'),
-    modalDescription = modal.querySelector('.modal__description');
+    modalDescription = modal.querySelector('.modal__description'),
+    burgerWrapper = document.querySelector('#burger-wrapper'),
+    burger = document.querySelector('#burger');
 
 const preloader = document.createElement('div');
 preloader.classList.add('lds-dual-ring');
@@ -63,18 +66,22 @@ const showSearchResult = data => {
             const imgPath = images[0].path,
                 extension = images[0].extension;
     
-            out += `<li class="search-results__item" id="sc${id}">
+            out += `<li class="search-card" id="sc${id}">
                         <figure>
                             <img 
-                                class="search-results__poster" 
+                                class="search-card__poster" 
                                 src=${imgPath}.${extension} 
                                 alt="poster" 
-                                width="300"
+                                width="250"
                             >
-                            <figcaption class="search-results__title">${title}</figcaption>
+                            <figcaption class="search-card__title">${title}</figcaption>
                             <button 
-                                class="search-results__btn ${className}">
+                                class="search-card__add ${className}">
                                 ${btnText}
+                            </button>
+                            <button 
+                                class="search-card__details">
+                                Details
                             </button>
                         </figure>
                     </li>`;
@@ -83,7 +90,7 @@ const showSearchResult = data => {
         out = 'No Results Found';
     }
 
-    searchResultsList.insertAdjacentHTML('beforeend', out);
+    searchList.insertAdjacentHTML('beforeend', out);
     preloader.remove();
 }
 
@@ -140,8 +147,8 @@ const removeFromFavourite = (comic, id) => {
     storageItems = storageItems.filter(item => item.id !== id);
     localStorage.setItem( 'storageItems', JSON.stringify(storageItems) );
 
-    if ( searchResultsList.querySelector(`#sc${id}`) ) {
-        const searchResultComic = searchResultsList.querySelector(`#sc${id}`),
+    if ( searchList.querySelector(`#sc${id}`) ) {
+        const searchResultComic = searchList.querySelector(`#sc${id}`),
             searchResultBtn = searchResultComic.querySelector('.fav-comic-btn');
 
         searchResultBtn.classList.remove('fav-comic-btn');
@@ -153,7 +160,7 @@ const removeFromFavourite = (comic, id) => {
 
 headerSearchForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    searchResultsList.innerHTML = '';
+    searchList.innerHTML = '';
     
     const query = this.elements.search.value
         .trim().split(' ').join('%20');
@@ -162,28 +169,27 @@ headerSearchForm.addEventListener('submit', function(e) {
         new DataService().getSearchResult(query).then(showSearchResult);
     }
 
-    searchResultsList.append(preloader);
+    searchList.append(preloader);
 });
 
-searchResultsList.addEventListener('click', e => {
+searchList.addEventListener('click', e => {
     const target = e.target,
-        comic = target.closest('.search-results__item'),
+        comic = target.closest('.search-card'),
         id = comic.id.slice(2);
 
-    if (target.matches('.search-results__btn') &&
+    if (target.matches('.search-card__add') &&
         !target.matches('.fav-comic-btn')) {
-        const btn = target.closest('.search-results__btn');
-
+        const btn = target.closest('.search-card__add');
         btn.textContent = 'Favourite';
         btn.classList.add('fav-comic-btn');
     
-        const title = comic.querySelector('.search-results__title').textContent,
+        const title = comic.querySelector('.search-card__title').textContent,
             comicObj = { id, title };
     
         addToFavourite(comicObj);
     } 
 
-    if (target.matches('.search-results__poster')) {
+    if (target.matches('.search-card__details')) {
         new DataService().getComicDetails(id).then(showDetailsModal);
     }
 });
@@ -210,6 +216,11 @@ modal.addEventListener('click', e => {
     if (closeBtn || background) {
         closeModal();
     }
+});
+
+burgerWrapper.addEventListener('click', () => {
+    favoriteSection.classList.toggle('collapse');
+    burger.classList.toggle('open');
 });
 
 loadStorage();
