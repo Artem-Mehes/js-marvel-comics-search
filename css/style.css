@@ -218,7 +218,6 @@ button {
     -webkit-transition: width .5s;
     -o-transition: width .5s;
     transition: width .5s;
-    position: relative;
 }
 
 .favourite__heading {

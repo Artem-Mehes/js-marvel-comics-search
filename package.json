@@ -4,12 +4,13 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
   },
   "author": "Artem Mehes",
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
     "crypto-js": "^4.0.0"
-  }
+  },
+  "devDependencies": {}
 }
